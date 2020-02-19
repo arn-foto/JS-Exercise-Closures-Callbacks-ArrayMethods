@@ -48,8 +48,8 @@ function processFirstItem(stringList, callback) {
  * [2] Invoking `processLength` passing `[]` and `(num) => "There are " + num`,
  * should return "There are 0".
 */
-function processLength(/* CODE HERE */) {
-  /* CODE HERE */
+function processLength(list, callback) {
+  return callback(list.length);
 }
 
 /**
@@ -66,8 +66,8 @@ function processLength(/* CODE HERE */) {
  * Invoking `processLastItem` passing `['foo', 'bar']` and `(str) => str + str`,
  * should return 'barbar'.
 */
-function processLastItem(/* CODE HERE */) {
-  /* CODE HERE */
+function processLastItem(stringList, callback) {
+  return callback(stringList[stringList.length -1]);
 }
 
 /**
@@ -75,7 +75,7 @@ function processLastItem(/* CODE HERE */) {
  * 
  * @instructions
  * Implement a higher-order function called `processSum`.
- * It takes two arguments:
+* It takes two arguments:
  * @param numberList array of numbers.
  * @param callback function that takes a number as its argument.
  * @returns the result of invoking `callback` passing the SUM of all elements in `numberList`.
@@ -86,9 +86,20 @@ function processLastItem(/* CODE HERE */) {
  * 
  * [2] Invoking `processSum` passing `[]` and `(num) => num + 1000`,
  * should return 1000.
+ * 
+ * 
+ *  * The reducer function takes four arguments:
+
+Accumulator (acc)
+Current Value (cur)
+Current Index (idx)
+Source Array (src)
+
+The reduce() method reduces the array to a single value
 */
-function processSum(/* CODE HERE */) {
-  /* CODE HERE */
+
+function processSum(numberList, callback) {
+  return callback(numberList.reduce((accumulate,currentValue) => accumulate + currentValue, 0))/* set at the index of 0 */
 }
 
 /**
@@ -109,8 +120,8 @@ function processSum(/* CODE HERE */) {
  * [2] Invoking `processProduct` passing 25 and 0 and `(num) => num + 1000`,
  * should return 1000.
 */
-function processProduct(/* CODE HERE */) {
-  /* CODE HERE */
+function processProduct(num1, num2, callback) {
+  return callback (num1 * num2);
 }
 
 /**
@@ -133,9 +144,14 @@ function processProduct(/* CODE HERE */) {
  * "lady gaga" and `['foo', 'bar']` and `(bool) => bool ? 'nice!' : 'sad'`,
  * should return "sad".
 */
-function processContains(/* CODE HERE */) {
-  /* CODE HERE */
+function processContains(item, list, callback) {
+  return callback(list.includes(item) ? true : false);  /*The condition is evaluated: if "item" is included in the list it will return true, if else then it returns false */
 }
+/*The so-called “conditional” or “question mark” operator lets us do that in a shorter and simpler way.
+
+The operator is represented by a question mark ?. Sometimes it’s called “ternary”, because the operator has three operands. It is actually the one and only operator in JavaScript which has that many. */
+
+
 
 /**
  * ### Challenge `processDuplicateFree`
@@ -155,9 +171,15 @@ function processContains(/* CODE HERE */) {
  * 
  * [2] Invoking `processDuplicateFree` passing `[1,1,2,2,3]` and `(arr) => arr.length`,
  * should return 3.
+ * \
+ * 
+ * 
+ * An arrow function expression is a syntactically compact alternative to a regular function expression
 */
-function processDuplicateFree(/* CODE HERE ONLY AFTER COMPLETING ALL OTHER TASKS */) {
-  /* CODE HERE ONLY AFTER COMPLETING ALL OTHER TASKS */
+function processDuplicateFree(list, callback) {
+  return callback(list.filter((item, index) => {
+    return list.indexOf(item) === index;
+  }))
 }
 
 /////////////// HIGHER-ORDER ARRAY METHODS ///////////////
@@ -178,9 +200,16 @@ function processDuplicateFree(/* CODE HERE ONLY AFTER COMPLETING ALL OTHER TASKS
  * @returns an array with all the runners' full names in the following format: "Smith, John".
  * The full names appear in the array in the same order the runners appear in the `runners` array.
 */
-function getFullNames(/* CODE HERE */) {
-  /* CODE HERE */
+function getFullNames(runners) {
+  let runnerList = []; /* Created an empty array*/
+  runners.forEach(function(runners) { /* The forEach() method executes a provided function once for each array element. */
+    let fullName = `${runners.last_name}, ${runners.first_name}`;
+    runnerList.push(fullName);
+    return fullName;
+  });
+  return runnerList; /* Will return with the list of runners names in an array */
 }
+
 
 /**
  * ### Challenge `firstNamesAllCaps`
@@ -193,9 +222,21 @@ function getFullNames(/* CODE HERE */) {
  * @param runners array of runners like the one inside the /data/runners.js file.
  * @returns an array with all the runners' first names in ALL CAPS.
  * The first names appear in the array in the same order the runners appear in the `runners` array.
+ * 
+ * 
+ * The map() method creates a new array populated with the results of calling a provided function on every element in the calling array.
+ * Since map builds a new array, using it when you aren't using the returned array is an anti-pattern; use forEach or for-of instead.
+
+You shouldn't be using map if:
+
+you're not using the array it returns; and/or
+you're not returning a value from the callback.
 */
-function firstNamesAllCaps(/* CODE HERE */) {
-  /* CODE HERE */
+function firstNamesAllCaps(runners) {
+  return runners.map (runners => {
+    return runners.first_name.toUpperCase();
+  });
+ 
 }
 
 /**
@@ -211,10 +252,11 @@ function firstNamesAllCaps(/* CODE HERE */) {
  * @returns an array containing only the runners that use the given `tShirtSize`.
  * The runners in the array appear in the same order they appear in the `runners` array.
 */
-function getRunnersByTShirtSize(/* CODE HERE */) {
-  /* CODE HERE */
+function getRunnersByTShirtSize(runners, tShirtSize) {
+   return runners.filter(runner => {
+    return runner.shirt_size === tShirtSize;
+  });
 }
-
 /**
  * ### Challenge `tallyUpDonations`
  * 
@@ -224,10 +266,24 @@ function getRunnersByTShirtSize(/* CODE HERE */) {
  * 
  * @param runners array of runners like the one inside the /data/runners.js file.
  * @returns a number which is the sum of the donations by all runners.
+ * 
+ * 
+ * The reducer function takes four arguments:
+
+Accumulator (acc)
+Current Value (cur)
+Current Index (idx)
+Source Array (src)
+
+The reduce() method reduces the array to a single value
 */
-function tallyUpDonations(/* CODE HERE */) {
-  /* CODE HERE */
+function tallyUpDonations(runners) {
+  
+  return runners.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.donation;
+  }, 0); /*<----This is for the index to start at 0*/
 }
+
 
 /////////////// CLOSURES ///////////////
 /////////////// CLOSURES ///////////////
@@ -244,16 +300,17 @@ function tallyUpDonations(/* CODE HERE */) {
  * counter() // should return 1
  * counter() // should return 2
  * etc
+ *
 */
 function counterMaker() {
   // BROKEN CODE STARTS
-  const count = 0;
+  let count = 0;
   function counter() {
-    ++count
+    return count++ /* swapped the counter to count up */
   }
+  return counter; /*added the missing return statement */
   // BROKEN CODE ENDS
 }
-
 /**
  * ### Challenge `counterMakerWithLimit`
  * 
@@ -274,10 +331,18 @@ function counterMaker() {
  * counter() // should return 0
  * etc
 */
-function counterMakerWithLimit(/* CODE HERE */) {
-  /* CODE HERE */
+function counterMakerWithLimit(maxValue) {
+  let count = 0;
+  function counter(){
+    if(count <= maxValue){
+      return count ++;
+    }else{
+      count = 0;
+      return count++;
+    }
+  }
+  return counter;
 }
-
 /////////////// END OF CHALLENGE ///////////////
 /////////////// END OF CHALLENGE ///////////////
 /////////////// END OF CHALLENGE ///////////////
